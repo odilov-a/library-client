@@ -7,7 +7,7 @@
     "start": "electron ."
   },
   "keywords": [],
-  "author": "Your Name",
+  "author": "Akbar Odilov",
   "license": "ISC",
   "dependencies": {
     "electron": "^16.0.0"
