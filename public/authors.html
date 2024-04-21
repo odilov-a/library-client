@@ -84,24 +84,15 @@
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
           <a class="navbar-brand"> Authors </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
         </div>
       </nav>
       <div class="container mt-3">
         <form id="addAuthorForm" method="post">
           <div class="row mt-6">
             <div class="col-md-6">
-              <label for="title" class="form-label">Author full name</label>
+              <label for="title" class="form-label"
+                >Write author full name:</label
+              >
               <input
                 type="text"
                 class="form-control"
@@ -114,7 +105,7 @@
           </div>
           <br />
           <button type="submit" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Add Author
+            <i class="bi bi-plus-circle"></i> Save author
           </button>
         </form>
       </div>
@@ -133,7 +124,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="updateAuthorModalLabel">
-                Update Author
+                Update author
               </h5>
               <button
                 type="button"
@@ -143,16 +134,17 @@
               ></button>
             </div>
             <div class="modal-body">
-              <form id="updateAuthorForm">
+              <form id="updateAuthorForm" method="post">
                 <div class="mb-3">
                   <label for="updateTitle" class="form-label"
-                    >Author Name</label
+                    >Author name:</label
                   >
                   <input
                     type="text"
                     class="form-control"
                     id="updateTitle"
                     name="updateTitle"
+                    placeholder="Enter author full name"
                     required
                   />
                 </div>
@@ -166,7 +158,8 @@
                   class="btn btn-primary"
                   data-bs-dismiss="modal"
                 >
-                  Update Author
+                  <i class="bi bi-pencil-square"></i>
+                  Update author
                 </button>
               </form>
             </div>
@@ -218,8 +211,8 @@
                   <div class="card">
                     <div class="card-body">
                       <h6 class="card-title">Author name:</h6><h4>${author.title}</h4>
-                      <button class="btn btn-danger delete-btn" data-id="${author._id}">Delete</button>
-                      <button class="btn btn-primary update-btn" data-id="${author._id}" data-bs-toggle="modal" data-bs-target="#updateAuthorModal">Update</button>
+                      <button class="btn btn-danger delete-btn" data-id="${author._id}"><i class="bi bi-trash-fill"></i> Delete</button>
+                      <button class="btn btn-primary update-btn" data-id="${author._id}" data-bs-toggle="modal" data-bs-target="#updateAuthorModal"><i class="bi bi-pencil-square"></i> Update</button>
                     </div>
                   </div>
                 `;
