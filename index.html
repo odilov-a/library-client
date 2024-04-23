@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,19 +12,23 @@
     body {
       background-color: #f8f9fa;
     }
+
     .container {
       max-width: 800px;
       margin: auto;
       padding-top: 50px;
     }
+
     .form-group {
       margin-bottom: 20px;
     }
+
     .search-btn {
       margin-top: 20px;
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <div style="display: flex; justify-content: space-between;">
@@ -85,9 +90,9 @@
           </div>
         </div>
       </div>
-        <button type="submit" class="btn btn-primary search-btn">
-          <i class="bi bi-search"></i> Search
-        </button>
+      <button type="submit" class="btn btn-primary search-btn">
+        <i class="bi bi-search"></i> Search
+      </button>
     </form>
     <div id="bookResults" class="mt-3"></div>
   </div>
@@ -170,27 +175,25 @@
             <th scope="col">Category</th>
             <th scope="col">Year</th>
             <th scope="col">Publisher</th>
-            <th scope="col">Description</th>
             <th scope="col">Count</th>
             <th scope="col">Image</th>
           </tr>
         </thead>
         <tbody>
           ${books
-            .map(
-              (book) => `
+          .map(
+            (book) => `
             <tr>
               <td>${book.title}</td>
               <td>${book.author}</td>
               <td>${book.category}</td>
               <td>${book.year}</td>
               <td>${book.publisher}</td>
-              <td>${book.description}</td>
               <td>${book.count}</td>
               <td><img src="${book.image[0].medium}" alt="${book.title}" style="max-width: 100px; max-height: 100px;"></td>
             </tr>`
-            )
-            .join("")}
+          )
+          .join("")}
         </tbody>
       </table>`;
       bookResults.innerHTML = table;
@@ -211,4 +214,5 @@
     populateSelects();
   </script>
 </body>
+
 </html>

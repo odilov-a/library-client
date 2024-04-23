@@ -1,353 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Authors</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
-      rel="stylesheet"
-    />
-    <style>
-      .sidebar {
-        width: 250px;
-        height: 100vh;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: #f8f9fa;
-        padding-top: 3rem;
-      }
-      .sidebar-item {
-        padding: 0.5rem 1.5rem;
-        color: #495057;
-      }
-      .sidebar-item:hover {
-        background-color: #e9ecef;
-      }
-      .main-content {
-        margin-left: 250px;
-        padding: 2rem;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="sidebar">
-      <ul class="nav flex-column">
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./dashboard.html">
-            <i class="bi bi-house"></i> Dashboard
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./authors.html">
-            <i class="bi bi-person"></i> Authors
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./categories.html">
-            <i class="bi bi-journal"></i> Categories
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./publishers.html">
-            <i class="bi bi-shop"></i> Publishers
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./books.html">
-            <i class="bi bi-book"></i> Books
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./search.html">
-            <i class="bi bi-search"></i> Search Books
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./students.html">
-            <i class="bi bi-person"></i> Students
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" id="logoutBtn" href="#">
-            <i class="bi bi-box-arrow-left"></i> Logout
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="main-content">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand"> Authors </a>
-        </div>
-      </nav>
-      <div class="container mt-3">
-        <form id="addAuthorForm" method="post">
-          <div class="row mt-6">
-            <div class="col-md-6">
-              <label for="title" class="form-label"
-                >Write author full name:</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="title"
-                name="title"
-                placeholder="Enter author full name"
-                required
-              />
-            </div>
-          </div>
-          <br />
-          <button type="submit" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Save author
-          </button>
-        </form>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Authors</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #f8f9fa;
+      padding-top: 3rem;
+    }
+
+    .sidebar-item {
+      padding: 0.5rem 1.5rem;
+      color: #495057;
+    }
+
+    .sidebar-item:hover {
+      background-color: #e9ecef;
+    }
+
+    .main-content {
+      margin-left: 250px;
+      padding: 2rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <ul class="nav flex-column">
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./dashboard.html">
+          <i class="bi bi-house"></i> Dashboard
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./authors.html">
+          <i class="bi bi-person"></i> Authors
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./categories.html">
+          <i class="bi bi-journal"></i> Categories
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./publishers.html">
+          <i class="bi bi-shop"></i> Publishers
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./books.html">
+          <i class="bi bi-book"></i> Books
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./search.html">
+          <i class="bi bi-search"></i> Search Books
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./students.html">
+          <i class="bi bi-person"></i> Students
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" id="logoutBtn" href="#">
+          <i class="bi bi-box-arrow-left"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="main-content">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand"> Authors </a>
       </div>
-      <div
-        id="authorsContainer"
-        class="row row-cols-1 row-cols-md-2 g-4 mt-3"
-      ></div>
-      <div
-        class="modal fade"
-        id="updateAuthorModal"
-        tabindex="-1"
-        aria-labelledby="updateAuthorModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="updateAuthorModalLabel">
-                Update author
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <form id="updateAuthorForm" method="post">
-                <div class="mb-3">
-                  <label for="updateTitle" class="form-label"
-                    >Author name:</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="updateTitle"
-                    name="updateTitle"
-                    placeholder="Enter author full name"
-                    required
-                  />
-                </div>
-                <input
-                  type="hidden"
-                  id="authorIdToUpdate"
-                  name="authorIdToUpdate"
-                />
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  data-bs-dismiss="modal"
-                >
+    </nav>
+    <div class="container mt-3">
+      <form id="addAuthorForm" method="post">
+        <div class="row mt-6">
+          <div class="col-md-6">
+            <label for="title" class="form-label">Write author full name:</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Enter author full name"
+              required />
+          </div>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-plus-circle"></i> Save author
+        </button>
+      </form>
+    </div>
+    <br />
+    <div style="height: 400px; overflow-y: scroll; overflow-x: hidden">
+      <div id="authorsContainer" class="row row-cols-1 row-cols-md-3 g-3 mt-3"></div>
+    </div>
+    <div class="modal fade" id="updateAuthorModal" tabindex="-1" aria-labelledby="updateAuthorModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateAuthorModalLabel">
+              Update author
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="updateAuthorForm" method="post">
+              <div class="mb-3">
+                <label for="updateTitle" class="form-label">Author name:</label>
+                <input type="text" class="form-control" id="updateTitle" name="updateTitle"
+                  placeholder="Enter author full name" required />
+              </div>
+              <input type="hidden" id="authorIdToUpdate" name="authorIdToUpdate" />
+              <div style="margin-left: 67%">
+                <button type="submit" class="btn btn-warning" data-bs-dismiss="modal">
                   <i class="bi bi-pencil-square"></i>
                   Update author
                 </button>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-      // Wait for the DOM content to be fully loaded
-      document.addEventListener("DOMContentLoaded", function () {
-        // Base URL for API requests
-        const BASE_URL = "http://localhost:3333";
-        // Get references to various elements in the DOM
-        const form = document.getElementById("addAuthorForm"); // Get the form for adding authors
-        const titleInput = document.getElementById("title"); // Get the input field for author title
-        const authorsContainer = document.getElementById("authorsContainer"); // Get the container for displaying authors
-        const logoutBtn = document.getElementById("logoutBtn"); // Get the logout button
-        const updateForm = document.getElementById("updateAuthorForm"); // Get the form for updating authors
-        const updateTitleInput = document.getElementById("updateTitle"); // Get the input field for updated author title
-        const authorIdToUpdateInput =
-          document.getElementById("authorIdToUpdate"); // Get the input field for author ID to update
-        // Check if all necessary elements are found
-        if (
-          form &&
-          titleInput &&
-          authorsContainer &&
-          logoutBtn &&
-          updateForm &&
-          updateTitleInput &&
-          authorIdToUpdateInput
-        ) {
-          // Function to fetch authors from the API and display them
-          const fetchAuthors = async () => {
-            try {
-              // Send a GET request to the API to fetch authors
-              const response = await axios.get(`${BASE_URL}/api/authors`);
-              // Extract the authors data from the response
-              const authors = response.data.data;
-              // Clear the authors container
-              authorsContainer.innerHTML = "";
-              // Loop through each author and create a card to display them
-              authors.forEach((author) => {
-                const card = document.createElement("div");
-                card.classList.add("col");
-                card.innerHTML = `
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    // Wait for the DOM content to be fully loaded
+    document.addEventListener("DOMContentLoaded", function () {
+      // Base URL for API requests
+      const BASE_URL = "http://localhost:3333";
+      // Get references to various elements in the DOM
+      const form = document.getElementById("addAuthorForm"); // Get the form for adding authors
+      const titleInput = document.getElementById("title"); // Get the input field for author title
+      const authorsContainer = document.getElementById("authorsContainer"); // Get the container for displaying authors
+      const logoutBtn = document.getElementById("logoutBtn"); // Get the logout button
+      const updateForm = document.getElementById("updateAuthorForm"); // Get the form for updating authors
+      const updateTitleInput = document.getElementById("updateTitle"); // Get the input field for updated author title
+      const authorIdToUpdateInput =
+        document.getElementById("authorIdToUpdate"); // Get the input field for author ID to update
+      // Check if all necessary elements are found
+      if (
+        form &&
+        titleInput &&
+        authorsContainer &&
+        logoutBtn &&
+        updateForm &&
+        updateTitleInput &&
+        authorIdToUpdateInput
+      ) {
+        // Function to fetch authors from the API and display them
+        const fetchAuthors = async () => {
+          try {
+            // Send a GET request to the API to fetch authors
+            const response = await axios.get(`${BASE_URL}/api/authors`);
+            // Extract the authors data from the response
+            const authors = response.data.data.reverse();
+            // Clear the authors container
+            authorsContainer.innerHTML = "";
+            // Loop through each author and create a card to display them
+            authors.forEach((author) => {
+              const card = document.createElement("div");
+              card.classList.add("col");
+              card.innerHTML = `
                   <div class="card">
                     <div class="card-body">
-                      <h6 class="card-title">Author name:</h6><h4>${author.title}</h4>
+                      <p class="card-title">Author name:</p><h5>${author.title}</h5>
                       <button class="btn btn-danger delete-btn" data-id="${author._id}"><i class="bi bi-trash-fill"></i> Delete</button>
-                      <button class="btn btn-primary update-btn" data-id="${author._id}" data-bs-toggle="modal" data-bs-target="#updateAuthorModal"><i class="bi bi-pencil-square"></i> Update</button>
+                      <button class="btn btn-warning update-btn" data-id="${author._id}" data-bs-toggle="modal" data-bs-target="#updateAuthorModal"><i class="bi bi-pencil-square"></i> Update</button>
                     </div>
                   </div>
                 `;
-                // Append the card to the authors container
-                authorsContainer.appendChild(card);
+              // Append the card to the authors container
+              authorsContainer.appendChild(card);
+            });
+          } catch (error) {
+            console.error("Error fetching authors:", error);
+          }
+        };
+        // Event listener for form submission to add a new author
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          // Get the value from the input field
+          const authorName = titleInput.value.trim();
+          // Check if the input is not empty
+          if (authorName) {
+            try {
+              // Send a POST request to the API to add a new author
+              await axios.post(`${BASE_URL}/api/authors`, {
+                title: authorName,
               });
+              // Clear the input field
+              titleInput.value = "";
+              // Fetch authors again to update the list
+              fetchAuthors();
             } catch (error) {
-              console.error("Error fetching authors:", error);
+              console.error("Error adding author:", error);
             }
-          };
-          // Event listener for form submission to add a new author
-          form.addEventListener("submit", async (event) => {
-            event.preventDefault();
-            // Get the value from the input field
-            const authorName = titleInput.value.trim();
-            // Check if the input is not empty
-            if (authorName) {
-              try {
-                // Send a POST request to the API to add a new author
-                await axios.post(`${BASE_URL}/api/authors`, {
-                  title: authorName,
-                });
-                // Clear the input field
-                titleInput.value = "";
-                // Fetch authors again to update the list
-                fetchAuthors();
-              } catch (error) {
-                console.error("Error adding author:", error);
-              }
-            }
-          });
-          // Event listener for delete buttons
-          authorsContainer.addEventListener("click", async (event) => {
-            // Check if the clicked element is a delete button
-            if (event.target.classList.contains("delete-btn")) {
-              // Get the ID of the author to delete
-              const authorId = event.target.dataset.id;
-              // Show a confirmation dialog using SweetAlert2
-              Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Yes, delete it!",
-              }).then(async (result) => {
-                if (result.isConfirmed) {
-                  try {
-                    // Send a DELETE request to the API to delete the author
-                    await axios.delete(`${BASE_URL}/api/authors/${authorId}`);
-                    // Show a success message
-                    Swal.fire(
-                      "Deleted!",
-                      "The author has been deleted.",
-                      "success"
-                    ).then(() => {
-                      // Reload the page after deletion
-                      window.location.reload();
-                    });
-                  } catch (error) {
-                    console.error("Error deleting author:", error);
-                    // Show an error message
-                    Swal.fire(
-                      "Error",
-                      "An error occurred while deleting the author.",
-                      "error"
-                    );
-                  }
+          }
+        });
+        // Event listener for delete buttons
+        authorsContainer.addEventListener("click", async (event) => {
+          // Check if the clicked element is a delete button
+          if (event.target.classList.contains("delete-btn")) {
+            // Get the ID of the author to delete
+            const authorId = event.target.dataset.id;
+            // Show a confirmation dialog using SweetAlert2
+            Swal.fire({
+              title: "Are you sure?",
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#d33",
+              cancelButtonColor: "#3085d6",
+              confirmButtonText: "Yes, delete it!",
+            }).then(async (result) => {
+              if (result.isConfirmed) {
+                try {
+                  // Send a DELETE request to the API to delete the author
+                  await axios.delete(`${BASE_URL}/api/authors/${authorId}`);
+                  // Show a success message
+                  Swal.fire(
+                    "Deleted!",
+                    "The author has been deleted.",
+                    "success"
+                  ).then(() => {
+                    // Reload the page after deletion
+                    window.location.reload();
+                  });
+                } catch (error) {
+                  console.error("Error deleting author:", error);
+                  // Show an error message
+                  Swal.fire(
+                    "Error",
+                    "An error occurred while deleting the author.",
+                    "error"
+                  );
                 }
-              });
-            }
-          });
-          // Event listener for update buttons
-          authorsContainer.addEventListener("click", async (event) => {
-            // Check if the clicked element is an update button
-            if (event.target.classList.contains("update-btn")) {
-              // Get the ID of the author to update
-              const authorId = event.target.dataset.id;
-              try {
-                // Send a GET request to the API to fetch the author data
-                const response = await axios.get(
-                  `${BASE_URL}/api/authors/${authorId}`
-                );
-                // Extract the author data from the response
-                const author = response.data.data;
-                // Set the value of the input field for updating author title
-                updateTitleInput.value = author.title;
-                // Set the value of the input field for author ID to update
-                authorIdToUpdateInput.value = author._id;
-              } catch (error) {
-                console.error("Error fetching author for update:", error);
               }
-            }
-          });
-          // Event listener for update form submission
-          updateForm.addEventListener("submit", async (event) => {
-            event.preventDefault();
+            });
+          }
+        });
+        // Event listener for update buttons
+        authorsContainer.addEventListener("click", async (event) => {
+          // Check if the clicked element is an update button
+          if (event.target.classList.contains("update-btn")) {
             // Get the ID of the author to update
-            const authorId = authorIdToUpdateInput.value;
-            // Get the updated author name from the input field
-            const updatedAuthorName = updateTitleInput.value.trim();
-            // Check if the input is not empty
-            if (updatedAuthorName) {
-              try {
-                // Send a PUT request to the API to update the author
-                await axios.put(`${BASE_URL}/api/authors/${authorId}`, {
-                  title: updatedAuthorName,
-                });
-                // Hide the update author modal
-                const updateAuthorModal = new bootstrap.Modal(
-                  document.getElementById("updateAuthorModal")
-                );
-                updateAuthorModal.hide();
-                // Fetch authors again to update the list
-                fetchAuthors();
-              } catch (error) {
-                console.error("Error updating author:", error);
-              }
+            const authorId = event.target.dataset.id;
+            try {
+              // Send a GET request to the API to fetch the author data
+              const response = await axios.get(
+                `${BASE_URL}/api/authors/${authorId}`
+              );
+              // Extract the author data from the response
+              const author = response.data.data;
+              // Set the value of the input field for updating author title
+              updateTitleInput.value = author.title;
+              // Set the value of the input field for author ID to update
+              authorIdToUpdateInput.value = author._id;
+            } catch (error) {
+              console.error("Error fetching author for update:", error);
             }
-          });
-          // Fetch authors initially when the page loads
-          fetchAuthors();
-          // Event listener for logout button
-          logoutBtn.addEventListener("click", function (event) {
-            event.preventDefault();
-            // Remove the token from local storage
-            localStorage.removeItem("token");
-            // Redirect to the login page
-            window.location.href = "../login.html";
-          });
-        } else {
-          console.error("DOM elements not found.");
-        }
-      });
-    </script>
-  </body>
+          }
+        });
+        // Event listener for update form submission
+        updateForm.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          // Get the ID of the author to update
+          const authorId = authorIdToUpdateInput.value;
+          // Get the updated author name from the input field
+          const updatedAuthorName = updateTitleInput.value.trim();
+          // Check if the input is not empty
+          if (updatedAuthorName) {
+            try {
+              // Send a PUT request to the API to update the author
+              await axios.put(`${BASE_URL}/api/authors/${authorId}`, {
+                title: updatedAuthorName,
+              });
+              // Hide the update author modal
+              const updateAuthorModal = new bootstrap.Modal(
+                document.getElementById("updateAuthorModal")
+              );
+              updateAuthorModal.hide();
+              // Fetch authors again to update the list
+              fetchAuthors();
+            } catch (error) {
+              console.error("Error updating author:", error);
+            }
+          }
+        });
+        // Fetch authors initially when the page loads
+        fetchAuthors();
+        // Event listener for logout button
+        logoutBtn.addEventListener("click", function (event) {
+          event.preventDefault();
+          // Remove the token from local storage
+          localStorage.removeItem("token");
+          // Redirect to the login page
+          window.location.href = "../login.html";
+        });
+      } else {
+        console.error("DOM elements not found.");
+      }
+    });
+  </script>
+</body>
+
 </html>

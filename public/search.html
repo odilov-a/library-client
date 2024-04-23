@@ -1,237 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Search Books</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
-      rel="stylesheet"
-    />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-    <style>
-      .sidebar {
-        width: 250px;
-        height: 100vh;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: #f8f9fa;
-        padding-top: 3rem;
-      }
-      .sidebar-item {
-        padding: 0.5rem 1.5rem;
-        color: #495057;
-      }
-      .sidebar-item:hover {
-        background-color: #e9ecef;
-      }
-      .main-content {
-        margin-left: 250px;
-        padding: 2rem;
-      }
-      body {
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search Books</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+  <style>
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #f8f9fa;
+      padding-top: 3rem;
+    }
+
+    .sidebar-item {
+      padding: 0.5rem 1.5rem;
+      color: #495057;
+    }
+
+    .sidebar-item:hover {
+      background-color: #e9ecef;
+    }
+
+    .main-content {
+      margin-left: 250px;
+      padding: 2rem;
+    }
+
+    body {
       background-color: #f8f9fa;
     }
+
     .form-group {
       margin-bottom: 20px;
     }
+
     .search-btn {
       margin-top: 20px;
     }
-    </style>
-  </head>
-  <body>
-    <div class="sidebar">
-      <ul class="nav flex-column">
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./dashboard.html">
-            <i class="bi bi-house"></i> Dashboard
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./authors.html">
-            <i class="bi bi-person"></i> Authors
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./categories.html">
-            <i class="bi bi-journal"></i> Categories
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./publishers.html">
-            <i class="bi bi-shop"></i> Publishers
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./books.html">
-            <i class="bi bi-book"></i> Books
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./search.html">
-            <i class="bi bi-search"></i> Search Books
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./students.html">
-            <i class="bi bi-person"></i> Students
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" id="logoutBtn" href="#">
-            <i class="bi bi-box-arrow-left"></i> Logout
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="main-content">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          <span class="navbar-brand mb-0 h1">Search books</span>
-        </div>
-      </nav>
-      <div class="container mt-3">
-        <form id="bookSearchForm">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" placeholder="Enter title">
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="category" class="form-label">Category</label>
-                <select class="form-select" id="category" name="category">
-                  <option value="">Select a category</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="author" class="form-label">Author</label>
-                <select class="form-select" id="author" name="author">
-                  <option value="">Select an author</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="publisher" class="form-label">Publisher</label>
-                <select class="form-select" id="publisher" name="publisher">
-                  <option value="">Select a publisher</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="year" class="form-label">Year</label>
-                <input type="text" class="form-control" id="year" placeholder="Enter year">
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="startYear" class="form-label">Start Year</label>
-                <input type="text" class="form-control" id="startYear" placeholder="Enter start year">
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="endYear" class="form-label">End Year</label>
-                <input type="text" class="form-control" id="endYear" placeholder="Enter end year">
-              </div>
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary search-btn">
-            <i class="bi bi-search"></i> Search
-          </button>
-        </form>
-        <div id="bookResults" class="mt-3"></div>
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <ul class="nav flex-column">
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./dashboard.html">
+          <i class="bi bi-house"></i> Dashboard
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./authors.html">
+          <i class="bi bi-person"></i> Authors
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./categories.html">
+          <i class="bi bi-journal"></i> Categories
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./publishers.html">
+          <i class="bi bi-shop"></i> Publishers
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./books.html">
+          <i class="bi bi-book"></i> Books
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./search.html">
+          <i class="bi bi-search"></i> Search Books
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./students.html">
+          <i class="bi bi-person"></i> Students
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" id="logoutBtn" href="#">
+          <i class="bi bi-box-arrow-left"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="main-content">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">Search books</span>
       </div>
+    </nav>
+    <div class="container mt-3">
+      <form id="bookSearchForm">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" class="form-control" id="title" placeholder="Enter title" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="category" class="form-label">Category</label>
+              <select class="form-select" id="category" name="category">
+                <option value="">Select a category</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="author" class="form-label">Author</label>
+              <select class="form-select" id="author" name="author">
+                <option value="">Select an author</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="publisher" class="form-label">Publisher</label>
+              <select class="form-select" id="publisher" name="publisher">
+                <option value="">Select a publisher</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="year" class="form-label">Year</label>
+              <input type="text" class="form-control" id="year" placeholder="Enter year" />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="startYear" class="form-label">Start Year</label>
+              <input type="text" class="form-control" id="startYear" placeholder="Enter start year" />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="endYear" class="form-label">End Year</label>
+              <input type="text" class="form-control" id="endYear" placeholder="Enter end year" />
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary search-btn">
+          <i class="bi bi-search"></i> Search
+        </button>
+      </form>
+      <div id="bookResults" class="mt-3"></div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-    <script>
-      const fetchOptions = async (url) => {
-        try {
-          const response = await fetch(url);
-          if (!response.ok) {
-            throw new Error("Failed to fetch options");
-          }
-          const data = await response.json();
-          return data.data;
-        } catch (error) {
-          console.error("Error:", error);
-          return [];
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+  <script>
+    const fetchOptions = async (url) => {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Failed to fetch options");
         }
-      };
-      const populateSelect = (selectId, options) => {
-        const selectElement = document.getElementById(selectId);
-        selectElement.innerHTML = "";
-        const defaultOption = document.createElement("option");
-        defaultOption.value = "";
-        defaultOption.textContent = "Select an option";
-        selectElement.appendChild(defaultOption);
-        options.forEach((option) => {
-          const optionElement = document.createElement("option");
-          optionElement.value = option._id;
-          optionElement.textContent = option.title;
-          selectElement.appendChild(optionElement);
-        });
-      };
-      const populateSelects = async () => {
-        const categoryUrl = "http://localhost:3333/api/categories";
-        const authorUrl = "http://localhost:3333/api/authors";
-        const publisherUrl = "http://localhost:3333/api/publishers";
-        const categoryOptions = await fetchOptions(categoryUrl);
-        const authorOptions = await fetchOptions(authorUrl);
-        const publisherOptions = await fetchOptions(publisherUrl);
-        populateSelect("category", categoryOptions);
-        populateSelect("author", authorOptions);
-        populateSelect("publisher", publisherOptions);
-      };
-      const searchBooks = async () => {
-        const title = document.getElementById("title").value;
-        const author = document.getElementById("author").value;
-        const category = document.getElementById("category").value;
-        const publisher = document.getElementById("publisher").value;
-        const year = document.getElementById("year").value;
-        const startYear = document.getElementById("startYear").value;
-        const endYear = document.getElementById("endYear").value;
-        const url = `http://localhost:3333/api/books/search?title=${title}&author=${author}&category=${category}&publisher=${publisher}&year=${year}&startYear=${startYear}&endYear=${endYear}`;
-        try {
-          const response = await fetch(url);
-          if (!response.ok) {
-            throw new Error("Failed to fetch data");
-          }
-          const data = await response.json();
-          displayBooks(data);
-        } catch (error) {
-          console.error("Error:", error);
-          displayNoBooksFound();
+        const data = await response.json();
+        return data.data;
+      } catch (error) {
+        console.error("Error:", error);
+        return [];
+      }
+    };
+    const populateSelect = (selectId, options) => {
+      const selectElement = document.getElementById(selectId);
+      selectElement.innerHTML = "";
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "";
+      defaultOption.textContent = "Select an option";
+      selectElement.appendChild(defaultOption);
+      options.forEach((option) => {
+        const optionElement = document.createElement("option");
+        optionElement.value = option._id;
+        optionElement.textContent = option.title;
+        selectElement.appendChild(optionElement);
+      });
+    };
+    const populateSelects = async () => {
+      const categoryUrl = "http://localhost:3333/api/categories";
+      const authorUrl = "http://localhost:3333/api/authors";
+      const publisherUrl = "http://localhost:3333/api/publishers";
+      const categoryOptions = await fetchOptions(categoryUrl);
+      const authorOptions = await fetchOptions(authorUrl);
+      const publisherOptions = await fetchOptions(publisherUrl);
+      populateSelect("category", categoryOptions);
+      populateSelect("author", authorOptions);
+      populateSelect("publisher", publisherOptions);
+    };
+    const searchBooks = async () => {
+      const title = document.getElementById("title").value;
+      const author = document.getElementById("author").value;
+      const category = document.getElementById("category").value;
+      const publisher = document.getElementById("publisher").value;
+      const year = document.getElementById("year").value;
+      const startYear = document.getElementById("startYear").value;
+      const endYear = document.getElementById("endYear").value;
+      const url = `http://localhost:3333/api/books/search?title=${title}&author=${author}&category=${category}&publisher=${publisher}&year=${year}&startYear=${startYear}&endYear=${endYear}`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
         }
-      };
-      const displayBooks = (data) => {
-        const bookResults = document.getElementById("bookResults");
-        bookResults.innerHTML = "";
-        if (data.data.length === 0) {
-          displayNoBooksFound();
-          return;
-        }
-        const books = data.data;
-        const table = `
+        const data = await response.json();
+        displayBooks(data);
+      } catch (error) {
+        console.error("Error:", error);
+        displayNoBooksFound();
+      }
+    };
+    const displayBooks = (data) => {
+      const bookResults = document.getElementById("bookResults");
+      bookResults.innerHTML = "";
+      if (data.data.length === 0) {
+        displayNoBooksFound();
+        return;
+      }
+      const books = data.data;
+      const table = `
         <table class="table">
           <thead class="table-light">
             <tr>
@@ -240,45 +242,52 @@
               <th scope="col">Category</th>
               <th scope="col">Year</th>
               <th scope="col">Publisher</th>
-              <th scope="col">Description</th>
               <th scope="col">Count</th>
               <th scope="col">Image</th>
             </tr>
           </thead>
           <tbody>
             ${books
-              .map(
-                (book) => `
+          .map(
+            (book) => `
               <tr>
                 <td>${book.title}</td>
                 <td>${book.author}</td>
                 <td>${book.category}</td>
                 <td>${book.year}</td>
                 <td>${book.publisher}</td>
-                <td>${book.description}</td>
                 <td>${book.count}</td>
                 <td><img src="${book.image[0].medium}" alt="${book.title}" style="max-width: 100px; max-height: 100px;"></td>
               </tr>`
-              )
-              .join("")}
+          )
+          .join("")}
           </tbody>
         </table>`;
-        bookResults.innerHTML = table;
-      };
-      const displayNoBooksFound = () => {
-        Swal.fire({
-          icon: "info",
-          title: "No Books Found",
-          text: "No books found matching the search criteria",
-        });
-      };
-      document
-        .getElementById("bookSearchForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
-          searchBooks();
-        });
-      populateSelects();
-    </script>
-  </body>
+      bookResults.innerHTML = table;
+    };
+    const displayNoBooksFound = () => {
+      Swal.fire({
+        icon: "info",
+        title: "No Books Found",
+        text: "No books found matching the search criteria",
+      });
+    };
+    // Event listener for logout button
+    logoutBtn.addEventListener("click", function (event) {
+      event.preventDefault();
+      // Remove the token from local storage
+      localStorage.removeItem("token");
+      // Redirect to the login page
+      window.location.href = "../login.html";
+    });
+    document
+      .getElementById("bookSearchForm")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
+        searchBooks();
+      });
+    populateSelects();
+  </script>
+</body>
+
 </html>

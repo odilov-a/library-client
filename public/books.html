@@ -1,191 +1,418 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Books</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
-      rel="stylesheet"
-    />
-    <style>
-      .sidebar {
-        width: 250px;
-        height: 100vh;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: #f8f9fa;
-        padding-top: 3rem;
-      }
-      .sidebar-item {
-        padding: 0.5rem 1.5rem;
-        color: #495057;
-      }
-      .sidebar-item:hover {
-        background-color: #e9ecef;
-      }
-      .main-content {
-        margin-left: 250px;
-        padding: 2rem;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="sidebar">
-      <ul class="nav flex-column">
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./dashboard.html">
-            <i class="bi bi-house"></i> Dashboard
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./authors.html">
-            <i class="bi bi-person"></i> Authors
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./categories.html">
-            <i class="bi bi-journal"></i> Categories
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./publishers.html">
-            <i class="bi bi-shop"></i> Publishers
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./books.html">
-            <i class="bi bi-book"></i> Books
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./search.html">
-            <i class="bi bi-search"></i> Search Books
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" href="./students.html">
-            <i class="bi bi-person"></i> Students
-          </a>
-        </li>
-        <li class="nav-item sidebar-item">
-          <a class="nav-link" id="logoutBtn" href="#">
-            <i class="bi bi-box-arrow-left"></i> Logout
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="main-content">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          <span class="navbar-brand mb-0 h1">Books</span>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Books</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #f8f9fa;
+      padding-top: 3rem;
+    }
+
+    .sidebar-item {
+      padding: 0.5rem 1.5rem;
+      color: #495057;
+    }
+
+    .sidebar-item:hover {
+      background-color: #e9ecef;
+    }
+
+    .main-content {
+      margin-left: 250px;
+      padding: 2rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <ul class="nav flex-column">
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./dashboard.html">
+          <i class="bi bi-house"></i> Dashboard
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./authors.html">
+          <i class="bi bi-person"></i> Authors
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./categories.html">
+          <i class="bi bi-journal"></i> Categories
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./publishers.html">
+          <i class="bi bi-shop"></i> Publishers
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./books.html">
+          <i class="bi bi-book"></i> Books
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./search.html">
+          <i class="bi bi-search"></i> Search Books
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./students.html">
+          <i class="bi bi-person"></i> Students
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" id="logoutBtn" href="#">
+          <i class="bi bi-box-arrow-left"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="main-content">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">Books</span>
+      </div>
+    </nav>
+    <div class="container mt-3">
+      <form id="addBookForm" method="post" enctype="multipart/form-data">
+        <div class="row mt-3">
+          <div class="col-md-3">
+            <label for="title" class="form-label">Write book title:</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Enter book title" required />
+          </div>
+          <div class="col-md-3">
+            <label for="category" class="form-label">Choose category:</label>
+            <select class="form-select" id="category" name="category" required>
+              <option value="">Select a category</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="author" class="form-label">Choose author:</label>
+            <select class="form-select" id="author" name="author" required>
+              <option value="">Select an author</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label for="publisher" class="form-label">Choose publisher:</label>
+            <select class="form-select" id="publisher" name="publisher" required>
+              <option value="">Select a publisher</option>
+            </select>
+          </div>
         </div>
-      </nav>
-      <div class="container mt-3">
-        <form id="bookForm" method="post" enctype="multipart/form-data">
-          <div class="row mt-3">
-            <div class="col-md-3">
-              <label for="title" class="form-label">Title</label>
-              <input
-                type="text"
-                class="form-control"
-                id="title"
-                name="title"
-                placeholder="Enter title"
-              />
-            </div>
-            <div class="col-md-3">
-              <label for="category" class="form-label">Category</label>
-              <select class="form-select" id="category" name="category">
-                <option value="">Select a category</option>
-                <option value="fiction">Fiction</option>
-                <option value="non-fiction">Non-Fiction</option>
-                <option value="fantasy">Fantasy</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label for="author" class="form-label">Author</label>
-              <select class="form-select" id="author" name="author">
-                <option value="">Select a author</option>
-                <option value="fiction">Fiction</option>
-                <option value="non-fiction">Non-Fiction</option>
-                <option value="fantasy">Fantasy</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label for="publisher" class="form-label">Publisher</label>
-              <select class="form-select" id="publisher" name="publisher">
-                <option value="">Select a publisher</option>
-                <option value="fiction">Fiction</option>
-                <option value="non-fiction">Non-Fiction</option>
-                <option value="fantasy">Fantasy</option>
-              </select>
-            </div>
+        <div class="row mt-3">
+          <div class="col-md-4">
+            <label for="year" class="form-label">Write book written year:</label>
+            <input type="text" class="form-control" id="year" placeholder="Enter book written year" name="year"
+              required />
           </div>
-          <div class="row mt-3">
-            <div class="col-md-4">
-              <label for="year" class="form-label">Year</label>
-              <input
-                type="text"
-                class="form-control"
-                id="year"
-                placeholder="Enter year"
-              />
-            </div>
-            <div class="col-md-4">
-              <label for="Count" class="form-label">Count</label>
-              <input
-                type="number"
-                class="form-control"
-                id="count"
-                placeholder="Enter count"
-                name="count"
-              />
-            </div>
-            <div class="col-md-4">
-              <label for="image" class="form-label">Image</label>
-              <input
-                type="file"
-                class="form-control"
-                id="image"
-                name="image"
-                placeholder="Image"
-                accept="image/png, image/jpeg, image/jpg"
-              />
-            </div>
-            <span><br /></span>
-            <div class="mb-3">
-              <label for="description" class="form-label">Description</label>
-              <textarea
-                class="form-control"
-                id="description"
-                name="description"
-                rows="3"
-                placeholder="Enter author description"
-                required
-              ></textarea>
-            </div>
+          <div class="col-md-4">
+            <label for="count" class="form-label">Write book count:</label>
+            <input type="number" class="form-control" id="count" placeholder="Enter book count" name="count" required />
           </div>
-          <button type="submit" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Add Book
-          </button>
-        </form>
+          <div class="col-md-4">
+            <label for="image" class="form-label">Choose book image:</label>
+            <input type="file" class="form-control" id="image" name="image" placeholder="Image"
+              accept="image/png, image/jpeg, image/jpg" required />
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="mb-3">
+            <label for="description" class="form-label">Write book description:</label>
+            <textarea class="form-control" id="description" name="description" rows="3"
+              placeholder="Enter book description" required></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-plus-circle"></i> Save book
+        </button>
+      </form>
+    </div>
+    <br />
+    <div style="height: 199px; overflow-y: auto; overflow-x: hidden;">
+      <div id="booksContainer" class="row row-cols-1 g-3 mt-3"></div>
+    </div>
+    <div class="modal fade" id="updateBookModal" tabindex="-1" aria-labelledby="updateBookModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateBookModalLabel">Update book</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="updateBookForm" method="post" enctype="multipart/form-data">
+              <div class="row mt-3">
+                <div class="col-md-3">
+                  <label for="title" class="form-label">Write book title:</label>
+                  <input type="text" class="form-control" id="updateTitle" name="title" placeholder="Enter book title"
+                    required />
+                </div>
+                <div class="col-md-3">
+                  <label for="category" class="form-label">Choose category:</label>
+                  <select class="form-select" id="updateCategory" name="category" required>
+                    <option value="">Select a category</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label for="author" class="form-label">Choose author</label>
+                  <select class="form-select" id="updateAuthor" name="author" required>
+                    <option value="">Select an author</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label for="publisher" class="form-label">Choose publisher</label>
+                  <select class="form-select" id="updatePublisher" name="publisher" required>
+                    <option value="">Select a publisher</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-md-4">
+                  <label for="year" class="form-label">Write book written year:</label>
+                  <input type="text" class="form-control" id="updateYear" placeholder="Enter book written year"
+                    name="year" required />
+                </div>
+                <div class="col-md-4">
+                  <label for="Count" class="form-label">Write book count:</label>
+                  <input type="number" class="form-control" id="updateCount" placeholder="Enter book count" name="count"
+                    required />
+                </div>
+                <div class="col-md-4">
+                  <label for="image" class="form-label">Choose book image</label>
+                  <input type="file" class="form-control" id="updateImage" name="image" placeholder="Image"
+                    accept="image/png, image/jpeg, image/jpg" required />
+                </div>
+                <div style="margin-left: 67%;">
+                  <button type="submit" class="btn btn-warning" data-bs-dismiss="modal">
+                    <i class="bi bi-pencil-square"></i>
+                    Update book
+                  </button>
+                </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      document
-        .getElementById("logoutBtn")
-        .addEventListener("click", function (event) {
-          event.preventDefault();
-          localStorage.removeItem("token");
-          window.location.href = "../login.html";
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const BASE_URL = "http://localhost:3333";
+      const form = document.getElementById("addBookForm");
+      const booksContainer = document.getElementById("booksContainer");
+      const logoutBtn = document.getElementById("logoutBtn");
+      const updateForm = document.getElementById("updateBookForm");
+      function fetchBooks() {
+        axios
+          .get(`${BASE_URL}/api/books`)
+          .then((response) => {
+            const books = response.data.data.reverse();
+            booksContainer.innerHTML = "";
+            books.forEach((book) => {
+              const card = document.createElement("div");
+              card.classList.add("col");
+              card.innerHTML = `
+              <div class="card border-0 shadow-sm">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="${book.image[0].medium}" class="img-fluid rounded-start" alt="${book.title}" />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">${book.title}</h5>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="card-text mb-0">${book.category}</p>
+                                <p class="card-text mb-0">${book.year}</p>
+                            </div>
+                            <p class="card-text">${book.description.substring(0, 150)}${book.description.length > 150 ? '...' : ''}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="card-text mb-0"><strong>Publisher:</strong> ${book.publisher}</p>
+                                    <p class="card-text mb-0"><strong>Count:</strong> ${book.count}</p>
+                                </div>
+                                <div class="d-flex">
+                                    <button class="btn btn-danger delete-btn me-2" data-id="${book._id}">
+                                        <i class="bi bi-trash-fill"></i> Delete
+                                    </button>
+                                    <button class="btn btn-warning update-btn" data-id="${book._id}" data-bs-toggle="modal" data-bs-target="#updateBookModal">
+                                        <i class="bi bi-pencil-square"></i> Update
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+              `;
+              booksContainer.appendChild(card);
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching books:", error);
+          });
+      }
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(form);
+        try {
+          const response = await axios.post(
+            `${BASE_URL}/api/books`,
+            formData
+          );
+          if (response.status === 200) {
+            form.reset();
+            fetchBooks();
+          }
+        } catch (error) {
+          console.error("Error adding book:", error);
+        }
+      });
+      booksContainer.addEventListener("click", async (event) => {
+        if (event.target.classList.contains("delete-btn")) {
+          const bookId = event.target.dataset.id;
+          // Show SweetAlert2 confirmation dialog
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              try {
+                const response = await axios.delete(`${BASE_URL}/api/books/${bookId}`);
+                if (response.status === 200) {
+                  // Show success message with SweetAlert2
+                  Swal.fire(
+                    'Deleted!',
+                    'Your book has been deleted.',
+                    'success'
+                  );
+                  fetchBooks(); // Refresh the book list
+                }
+              } catch (error) {
+                // Show error message with SweetAlert2
+                Swal.fire(
+                  'Error!',
+                  'Failed to delete the book.',
+                  'error'
+                );
+                console.error("Error deleting book:", error);
+              }
+            }
+          });
+        }
+      });
+      booksContainer.addEventListener("click", async (event) => {
+        if (event.target.classList.contains("update-btn")) {
+          const bookId = event.target.dataset.id;
+          try {
+            const response = await axios.get(
+              `${BASE_URL}/api/books/${bookId}`
+            );
+            if (response.status === 200) {
+              const book = response.data;
+              updateTitleInput.value = book.title;
+              updateCategorySelect.value = book.category;
+              updateAuthorSelect.value = book.author;
+              updatePublisherSelect.value = book.publisher;
+              updateYearInput.value = book.year;
+              updateCountInput.value = book.count;
+              updateDescriptionInput.value = book.description;
+              updateForm.dataset.id = bookId;
+            }
+          } catch (error) {
+            console.error("Error fetching book for update:", error);
+          }
+        }
+      });
+      updateForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const bookId = event.target.dataset.id;
+        const formData = new FormData(updateForm);
+        try {
+          const response = await axios.put(
+            `${BASE_URL}/api/books/${bookId}`,
+            formData
+          );
+          if (response.status === 200) {
+            updateForm.reset();
+            const modal = bootstrap.Modal.getInstance(
+              document.getElementById("updateBookModal")
+            );
+            modal.hide();
+            fetchBooks();
+          }
+        } catch (error) {
+          console.error("Error updating book:", error);
+        }
+      });
+      logoutBtn.addEventListener("click", function (event) {
+        event.preventDefault();
+        localStorage.removeItem("token");
+        window.location.href = "../login.html";
+      });
+      (async function () {
+        try {
+          const categoryOptions = await fetchOptions(
+            `${BASE_URL}/api/categories`
+          );
+          const authorOptions = await fetchOptions(`${BASE_URL}/api/authors`);
+          const publisherOptions = await fetchOptions(
+            `${BASE_URL}/api/publishers`
+          );
+          populateSelect("category", categoryOptions);
+          populateSelect("updateCategory", categoryOptions);
+          populateSelect("author", authorOptions);
+          populateSelect("updateAuthor", authorOptions);
+          populateSelect("publisher", publisherOptions);
+          populateSelect("updatePublisher", publisherOptions);
+          fetchBooks();
+        } catch (error) {
+          console.error("Error initializing:", error);
+        }
+      })();
+      async function fetchOptions(url) {
+        try {
+          const response = await axios.get(url);
+          return response.data.data;
+        } catch (error) {
+          console.error("Error fetching options:", error);
+          return [];
+        }
+      }
+      function populateSelect(selectId, options) {
+        const selectElement = document.getElementById(selectId);
+        selectElement.innerHTML = "";
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Select an option";
+        selectElement.appendChild(defaultOption);
+        options.forEach((option) => {
+          const optionElement = document.createElement("option");
+          optionElement.value = option._id;
+          optionElement.textContent = option.title;
+          selectElement.appendChild(optionElement);
         });
-    </script>
-  </body>
+      }
+    });
+  </script>
+</body>
+
 </html>
