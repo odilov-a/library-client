@@ -140,7 +140,7 @@
       </form>
     </div>
     <br />
-    <div style="height: 199px; overflow-y: auto; overflow-x: hidden;">
+    <div style="height: 199px; overflow-y: auto; overflow-x: hidden">
       <div id="booksContainer" class="row row-cols-1 g-3 mt-3"></div>
     </div>
     <div class="modal fade" id="updateBookModal" tabindex="-1" aria-labelledby="updateBookModalLabel"
@@ -193,13 +193,15 @@
                   <label for="image" class="form-label">Choose book image</label>
                   <input type="file" class="form-control" id="updateImage" name="image" placeholder="Image"
                     accept="image/png, image/jpeg, image/jpg" required />
+                  <input type="hidden" id="bookIdToUpdate" name="bookIdToUpdate" />
+                  <div style="margin-left: 40%; margin-top: 4%">
+                    <button type="submit" class="btn btn-warning" data-bs-dismiss="modal">
+                      <i class="bi bi-pencil-square"></i>
+                      Update book
+                    </button>
+                  </div>
                 </div>
-                <div style="margin-left: 67%;">
-                  <button type="submit" class="btn btn-warning" data-bs-dismiss="modal">
-                    <i class="bi bi-pencil-square"></i>
-                    Update book
-                  </button>
-                </div>
+              </div>
             </form>
           </div>
         </div>
@@ -215,6 +217,7 @@
       const form = document.getElementById("addBookForm");
       const booksContainer = document.getElementById("booksContainer");
       const logoutBtn = document.getElementById("logoutBtn");
+      const bookIdToUpdateInput = document.getElementById("bookIdToUpdate");
       const updateForm = document.getElementById("updateBookForm");
       function fetchBooks() {
         axios
@@ -229,22 +232,25 @@
               <div class="card border-0 shadow-sm">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="${book.image[0].medium}" class="img-fluid rounded-start" alt="${book.title}" />
+                        <img src="${book.image[0].medium}" class="img-fluid rounded-start" alt="Book Cover" />
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
                             <h5 class="card-title">${book.title}</h5>
                             <div class="d-flex justify-content-between align-items-center">
-                                <p class="card-text mb-0">${book.category}</p>
+                                <p class="card-text mb-0">${book.category.title}</p>
+                                <p class="card-text mb-0">${book.author.title}</p>
                                 <p class="card-text mb-0">${book.year}</p>
                             </div>
-                            <p class="card-text">${book.description.substring(0, 150)}${book.description.length > 150 ? '...' : ''}</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <p class="card-text mb-0"><strong>Publisher:</strong> ${book.publisher}</p>
+                                    <p class="card-text mb-0"><strong>Publisher:</strong> ${book.publisher.title}</p>
                                     <p class="card-text mb-0"><strong>Count:</strong> ${book.count}</p>
                                 </div>
                                 <div class="d-flex">
+                                    <button class="btn btn-primary view-all-btn me-2" data-bs-toggle="collapse" data-bs-target="#collapseDescription" aria-expanded="false" aria-controls="collapseDescription">
+                                        View All
+                                    </button>
                                     <button class="btn btn-danger delete-btn me-2" data-id="${book._id}">
                                         <i class="bi bi-trash-fill"></i> Delete
                                     </button>
@@ -252,6 +258,9 @@
                                         <i class="bi bi-pencil-square"></i> Update
                                     </button>
                                 </div>
+                            </div>
+                            <div class="collapse" id="collapseDescription">
+                                <p class="card-text">${book.description}</p>
                             </div>
                         </div>
                     </div>
@@ -286,33 +295,31 @@
           const bookId = event.target.dataset.id;
           // Show SweetAlert2 confirmation dialog
           Swal.fire({
-            title: 'Are you sure?',
+            title: "Are you sure?",
             text: "You won't be able to revert this!",
-            icon: 'warning',
+            icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, delete it!",
           }).then(async (result) => {
             if (result.isConfirmed) {
               try {
-                const response = await axios.delete(`${BASE_URL}/api/books/${bookId}`);
+                const response = await axios.delete(
+                  `${BASE_URL}/api/books/${bookId}`
+                );
                 if (response.status === 200) {
                   // Show success message with SweetAlert2
                   Swal.fire(
-                    'Deleted!',
-                    'Your book has been deleted.',
-                    'success'
+                    "Deleted!",
+                    "Your book has been deleted.",
+                    "success"
                   );
                   fetchBooks(); // Refresh the book list
                 }
               } catch (error) {
                 // Show error message with SweetAlert2
-                Swal.fire(
-                  'Error!',
-                  'Failed to delete the book.',
-                  'error'
-                );
+                Swal.fire("Error!", "Failed to delete the book.", "error");
                 console.error("Error deleting book:", error);
               }
             }
@@ -326,17 +333,24 @@
             const response = await axios.get(
               `${BASE_URL}/api/books/${bookId}`
             );
-            if (response.status === 200) {
-              const book = response.data;
-              updateTitleInput.value = book.title;
-              updateCategorySelect.value = book.category;
-              updateAuthorSelect.value = book.author;
-              updatePublisherSelect.value = book.publisher;
-              updateYearInput.value = book.year;
-              updateCountInput.value = book.count;
-              updateDescriptionInput.value = book.description;
-              updateForm.dataset.id = bookId;
-            }
+            const book = response.data.data;
+            // Set values for update form inputs
+            document.getElementById("updateTitle").value = book.title;
+            // Select the correct option in the category select
+            const updateCategorySelect =
+              document.getElementById("updateCategory");
+            updateCategorySelect.value = book.category._id;
+            // Select the correct option in the author select
+            const updateAuthorSelect =
+              document.getElementById("updateAuthor");
+            updateAuthorSelect.value = book.author._id;
+            // Select the correct option in the publisher select
+            const updatePublisherSelect =
+              document.getElementById("updatePublisher");
+            updatePublisherSelect.value = book.publisher._id;
+            document.getElementById("updateYear").value = book.year;
+            document.getElementById("updateCount").value = book.count;
+            document.getElementById("bookIdToUpdate").value = book._id; // Set hidden input value
           } catch (error) {
             console.error("Error fetching book for update:", error);
           }
@@ -344,7 +358,7 @@
       });
       updateForm.addEventListener("submit", async (event) => {
         event.preventDefault();
-        const bookId = event.target.dataset.id;
+        const bookId = bookIdToUpdateInput.value; // Get book ID from hidden input
         const formData = new FormData(updateForm);
         try {
           const response = await axios.put(
