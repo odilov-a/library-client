@@ -114,9 +114,8 @@
         <div class="row mt-3">
           <div class="col-md-4">
             <label for="year" class="form-label">Write book written year:</label>
-            <input type="text" class="form-control" id="year" placeholder="Enter book written year" name="year"
-              required />
-          </div>
+            <input type="number" class="form-control" id="year" placeholder="YYYY" minlength="4" maxlength="4" min="1000" max="9999" name="year" required />
+        </div>
           <div class="col-md-4">
             <label for="count" class="form-label">Write book count:</label>
             <input type="number" class="form-control" id="count" placeholder="Enter book count" name="count" required />
@@ -140,7 +139,7 @@
       </form>
     </div>
     <br />
-    <div style="height: 199px; overflow-y: auto; overflow-x: hidden">
+    <div style="height: 270px; overflow-y: auto; overflow-x: hidden">
       <div id="booksContainer" class="row row-cols-1 g-3 mt-3"></div>
     </div>
     <div class="modal fade" id="updateBookModal" tabindex="-1" aria-labelledby="updateBookModalLabel"
@@ -181,26 +180,30 @@
               <div class="row mt-3">
                 <div class="col-md-4">
                   <label for="year" class="form-label">Write book written year:</label>
-                  <input type="text" class="form-control" id="updateYear" placeholder="Enter book written year"
-                    name="year" required />
+                  <input type="number" class="form-control" id="updateYear" placeholder="YYYY" minlength="4" maxlength="4" min="1000" max="9999" name="year" 
+                    required />
                 </div>
                 <div class="col-md-4">
                   <label for="Count" class="form-label">Write book count:</label>
                   <input type="number" class="form-control" id="updateCount" placeholder="Enter book count" name="count"
                     required />
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 mb-2">
                   <label for="image" class="form-label">Choose book image</label>
                   <input type="file" class="form-control" id="updateImage" name="image" placeholder="Image"
                     accept="image/png, image/jpeg, image/jpg" required />
-                  <input type="hidden" id="bookIdToUpdate" name="bookIdToUpdate" />
-                  <div style="margin-left: 40%; margin-top: 4%">
-                    <button type="submit" class="btn btn-warning" data-bs-dismiss="modal">
-                      <i class="bi bi-pencil-square"></i>
-                      Update book
-                    </button>
-                  </div>
                 </div>
+                <div class="mb-3">
+                  <label for="updateDescription" class="form-label">Write book description:</label>
+                  <textarea class="form-control" id="updateDescription" name="updateDescription" rows="3"
+                    placeholder="Enter book description" required></textarea>
+                </div>
+              </div>
+              <div style="margin-left: 40%">
+                <button type="submit" class="btn btn-warning" data-bs-dismiss="modal">
+                  <i class="bi bi-pencil-square"></i>
+                  Update book
+                </button>
               </div>
             </form>
           </div>
@@ -249,7 +252,7 @@
                                 </div>
                                 <div class="d-flex">
                                     <button class="btn btn-primary view-all-btn me-2" data-bs-toggle="collapse" data-bs-target="#collapseDescription" aria-expanded="false" aria-controls="collapseDescription">
-                                        View All
+                                        View description
                                     </button>
                                     <button class="btn btn-danger delete-btn me-2" data-id="${book._id}">
                                         <i class="bi bi-trash-fill"></i> Delete
@@ -350,12 +353,15 @@
             updatePublisherSelect.value = book.publisher._id;
             document.getElementById("updateYear").value = book.year;
             document.getElementById("updateCount").value = book.count;
+            document.getElementById("updateDescription").value =
+              book.description; // Set description input value
             document.getElementById("bookIdToUpdate").value = book._id; // Set hidden input value
           } catch (error) {
             console.error("Error fetching book for update:", error);
           }
         }
       });
+      // Inside the updateForm submit event listener
       updateForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         const bookId = bookIdToUpdateInput.value; // Get book ID from hidden input
@@ -380,7 +386,7 @@
       logoutBtn.addEventListener("click", function (event) {
         event.preventDefault();
         localStorage.removeItem("token");
-        window.location.href = "../login.html";
+        window.location.href = "../index.html";
       });
       (async function () {
         try {

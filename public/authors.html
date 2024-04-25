@@ -101,7 +101,7 @@
       </form>
     </div>
     <br />
-    <div style="height: 400px; overflow-y: scroll; overflow-x: hidden">
+    <div style="height: 480px; overflow-y: scroll; overflow-x: hidden">
       <div id="authorsContainer" class="row row-cols-1 row-cols-md-3 g-3 mt-3"></div>
     </div>
     <div class="modal fade" id="updateAuthorModal" tabindex="-1" aria-labelledby="updateAuthorModalLabel"
@@ -309,7 +309,7 @@
           // Remove the token from local storage
           localStorage.removeItem("token");
           // Redirect to the login page
-          window.location.href = "../login.html";
+          window.location.href = "../index.html";
         });
       } else {
         console.error("DOM elements not found.");
