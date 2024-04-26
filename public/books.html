@@ -112,30 +112,22 @@
           </div>
         </div>
         <div class="row mt-3">
-          <div class="col-md-4">
+          <div class="col-md-6">
             <label for="year" class="form-label">Write book written year:</label>
-            <input type="number" class="form-control" id="year" placeholder="YYYY" minlength="4" maxlength="4" min="1000" max="9999" name="year" required />
-        </div>
-          <div class="col-md-4">
-            <label for="count" class="form-label">Write book count:</label>
-            <input type="number" class="form-control" id="count" placeholder="Enter book count" name="count" required />
+            <input type="number" class="form-control" id="year" placeholder="YYYY" minlength="4" maxlength="4"
+              min="1000" max="9999" name="year" required />
           </div>
-          <div class="col-md-4">
+          <div class="col-md-6">
             <label for="image" class="form-label">Choose book image:</label>
             <input type="file" class="form-control" id="image" name="image" placeholder="Image"
               accept="image/png, image/jpeg, image/jpg" required />
           </div>
         </div>
-        <div class="row mt-3">
-          <div class="mb-3">
-            <label for="description" class="form-label">Write book description:</label>
-            <textarea class="form-control" id="description" name="description" rows="3"
-              placeholder="Enter book description" required></textarea>
-          </div>
+        <div class="d-grid gap-2 col-5 mx-auto" style="margin-top: 2%">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Save book
+          </button>
         </div>
-        <button type="submit" class="btn btn-primary">
-          <i class="bi bi-plus-circle"></i> Save book
-        </button>
       </form>
     </div>
     <br />
@@ -165,41 +157,32 @@
                   </select>
                 </div>
                 <div class="col-md-3">
-                  <label for="author" class="form-label">Choose author</label>
+                  <label for="author" class="form-label">Choose author:</label>
                   <select class="form-select" id="updateAuthor" name="author" required>
                     <option value="">Select an author</option>
                   </select>
                 </div>
                 <div class="col-md-3">
-                  <label for="publisher" class="form-label">Choose publisher</label>
+                  <label for="publisher" class="form-label">Choose publisher:</label>
                   <select class="form-select" id="updatePublisher" name="publisher" required>
                     <option value="">Select a publisher</option>
                   </select>
                 </div>
               </div>
               <div class="row mt-3">
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <label for="year" class="form-label">Write book written year:</label>
-                  <input type="number" class="form-control" id="updateYear" placeholder="YYYY" minlength="4" maxlength="4" min="1000" max="9999" name="year" 
-                    required />
+                  <input type="number" class="form-control" id="updateYear" placeholder="YYYY" minlength="4"
+                    maxlength="4" min="1000" max="9999" name="year" required />
                 </div>
-                <div class="col-md-4">
-                  <label for="Count" class="form-label">Write book count:</label>
-                  <input type="number" class="form-control" id="updateCount" placeholder="Enter book count" name="count"
-                    required />
-                </div>
-                <div class="col-md-4 mb-2">
-                  <label for="image" class="form-label">Choose book image</label>
+                <div class="col-md-6">
+                  <label for="image" class="form-label">Choose book image:</label>
                   <input type="file" class="form-control" id="updateImage" name="image" placeholder="Image"
                     accept="image/png, image/jpeg, image/jpg" required />
                 </div>
-                <div class="mb-3">
-                  <label for="updateDescription" class="form-label">Write book description:</label>
-                  <textarea class="form-control" id="updateDescription" name="updateDescription" rows="3"
-                    placeholder="Enter book description" required></textarea>
-                </div>
+                <input type="hidden" id="bookIdToUpdate" name="bookIdToUpdate" />
               </div>
-              <div style="margin-left: 40%">
+              <div class="d-grid gap-2 col-5 mx-auto" style="margin-top: 2%">
                 <button type="submit" class="btn btn-warning" data-bs-dismiss="modal">
                   <i class="bi bi-pencil-square"></i>
                   Update book
@@ -239,21 +222,12 @@
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h5 class="card-title">${book.title}</h5>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <p class="card-text mb-0">${book.category.title}</p>
-                                <p class="card-text mb-0">${book.author.title}</p>
-                                <p class="card-text mb-0">${book.year}</p>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <p class="card-text mb-0"><strong>Publisher:</strong> ${book.publisher.title}</p>
-                                    <p class="card-text mb-0"><strong>Count:</strong> ${book.count}</p>
-                                </div>
-                                <div class="d-flex">
-                                    <button class="btn btn-primary view-all-btn me-2" data-bs-toggle="collapse" data-bs-target="#collapseDescription" aria-expanded="false" aria-controls="collapseDescription">
-                                        View description
-                                    </button>
+                            <h6 class="card-title">Book name: <i>${book.title}</i></h6>
+                            <h6 class="card-text">Author name: <i>${book.author.title}</i></h6>
+                            <h6 class="card-text">Book genre: <i>${book.category.title}</i></h6>
+                            <h6 class="card-text">Year of publication: <i>${book.year}</i></h6>
+                            <h6 class="card-text">Publisher name: <i>${book.publisher.title}</i></h6>
+                            <div class="d-flex">
                                     <button class="btn btn-danger delete-btn me-2" data-id="${book._id}">
                                         <i class="bi bi-trash-fill"></i> Delete
                                     </button>
@@ -261,10 +235,6 @@
                                         <i class="bi bi-pencil-square"></i> Update
                                     </button>
                                 </div>
-                            </div>
-                            <div class="collapse" id="collapseDescription">
-                                <p class="card-text">${book.description}</p>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -352,9 +322,6 @@
               document.getElementById("updatePublisher");
             updatePublisherSelect.value = book.publisher._id;
             document.getElementById("updateYear").value = book.year;
-            document.getElementById("updateCount").value = book.count;
-            document.getElementById("updateDescription").value =
-              book.description; // Set description input value
             document.getElementById("bookIdToUpdate").value = book._id; // Set hidden input value
           } catch (error) {
             console.error("Error fetching book for update:", error);
