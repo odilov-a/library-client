@@ -89,45 +89,240 @@
       <form id="addStudentForm" method="post">
         <div class="row mt-4">
           <div class="col-md-4">
-              <label for="name" class="form-label">Write student name:</label>
-              <input type="text" class="form-control" id="name" name="name" placeholder="Enter student name" required>
+            <label for="name" class="form-label">Write student full name:</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Enter student full name" required />
           </div>
           <div class="col-md-4">
-              <label for="username" class="form-label">Write student ID:</label>
-              <input type="text" class="form-control" id="username" name="username" placeholder="Enter student ID"
-                required>
+            <label for="username" class="form-label">Write student ID:</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Enter student ID"
+              required />
           </div>
           <div class="col-md-4">
-              <label for="booked" class="form-label">Choose book:</label>
-              <input type="text" class="form-control" id="booked" name="booked" placeholder="Enter student booked"
-                required>
+            <label for="booked" class="form-label">Choose book:</label>
+            <select class="form-select" id="booked" name="booked" required>
+              <option value="">Select an book</option>
+            </select>
           </div>
         </div>
         <div class="row mt-4">
           <div class="col-md-6">
-              <label for="date" class="form-label">Take date:</label>
-              <input type="date" class="form-control" id="takeDate" name="takeDate" required>
+            <label for="takeDate" class="form-label">Take date:</label>
+            <input type="date" class="form-control" id="takeDate" name="takeDate" required />
           </div>
           <div class="col-md-6">
-              <label for="date" class="form-label">Give date:</label>
-              <input type="date" class="form-control" id="giveDate" name="giveDate" required>
+            <label for="giveDate" class="form-label">Give date:</label>
+            <input type="date" class="form-control" id="giveDate" name="giveDate" required />
           </div>
-        </div><br/>
-        <button type="submit" class="btn btn-primary">
-          <i class="bi bi-plus-circle"></i> Add student
-        </button>
+        </div>
+        <div class="d-grid gap-2 col-5 mx-auto" style="margin-top: 2%">
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Save student
+          </button>
+        </div>
       </form>
+    </div>
+    <div id="students" class="row row-cols-1 row-cols-md-3 g-3 mt-3"></div>
+    <div class="modal fade" id="updateStudentModal" tabindex="-1" aria-labelledby="updateStudentModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateStudentModalLabel">
+              Update student
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="updateStudentForm" method="post">
+              <input type="hidden" id="studentIdToUpdate" name="studentIdToUpdate" />
+              <div class="mb-3">
+                <label for="updateName" class="form-label">Write student full name:</label>
+                <input type="text" class="form-control" id="updateName" name="name" required
+                  placeholder="Enter student full name" />
+              </div>
+              <div class="mb-3">
+                <label for="updateUsername" class="form-label">Write student ID:</label>
+                <input type="text" class="form-control" id="updateUsername" name="username" required
+                  placeholder="Enter student ID" />
+              </div>
+              <div class="mb-3">
+                <label for="updateTakeDate" class="form-label">Take date:</label>
+                <input type="date" class="form-control" id="updateTakeDate" name="takeDate" required />
+              </div>
+              <div class="mb-3">
+                <label for="updateGiveDate" class="form-label">Give date:</label>
+                <input type="date" class="form-control" id="updateGiveDate" name="giveDate" required />
+              </div>
+              <div class="mb-3">
+                <label for="updateBooked" class="form-label">Choose book:</label>
+                <select class="form-select" id="updateBooked" name="updateBooked" required>
+                  <option value="">Select an book</option>
+                </select>
+              </div>
+              <div style="margin-left: 65%">
+                <button type="submit" class="btn btn-warning">
+                  <i class="bi bi-pencil-square"></i> Update student
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    document
-      .getElementById("logoutBtn")
-      .addEventListener("click", function (event) {
-        event.preventDefault();
-        localStorage.removeItem("token");
-        window.location.href = "../index.html";
+    document.addEventListener("DOMContentLoaded", async function () {
+      const BASE_URL = "http://localhost:3333";
+      const form = document.getElementById("addStudentForm");
+      const updateStudentForm = document.getElementById("updateStudentForm");
+      const studentsContainer = document.getElementById("students");
+      // Function to fetch and populate books in the select element
+      const fetchAndPopulateBooks = async (selectElementId) => {
+        try {
+          const response = await axios.get(`${BASE_URL}/api/books`);
+          const books = response.data.data;
+          const selectElement = document.getElementById(selectElementId);
+          selectElement.innerHTML = ""; // Clear existing options
+          // Create and append option elements for each book
+          books.forEach((book) => {
+            const option = document.createElement("option");
+            option.value = book._id;
+            option.textContent = book.title;
+            selectElement.appendChild(option);
+          });
+        } catch (error) {
+          console.error("Error fetching books:", error);
+        }
+      };
+      // Fetch and populate books for both add and update forms
+      await fetchAndPopulateBooks("booked");
+      await fetchAndPopulateBooks("updateBooked");
+      // Function to format date string to "dd-mm-yyyy" format
+      const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, "0");
+        const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+      };
+      const renderStudents = (students) => {
+        studentsContainer.innerHTML = "";
+        students.forEach((student) => {
+          const card = document.createElement("div");
+          card.classList.add("col");
+          card.innerHTML = `
+            <div class="card">
+              <div class="card-body">
+                <h6 class="card-title">Student name: ${student.name}</h6>
+                <h6 class="card-subtitle text-muted">Student ID: ${student.username}</h6>
+                <h6 class="card-text">Book name: ${student.booked.title}</h6>
+                <h6 class="card-text">Taken date: ${formatDate(student.take)}</h6> 
+                <h6 class="card-text">Given date: ${formatDate(student.give)}</h6> 
+                <button class="btn btn-danger delete-btn" data-id="${student._id
+                  }"><i class="bi bi-trash-fill"></i> Delete</button>
+                <button class="btn btn-warning update-btn" data-id="${student._id
+                  }" data-bs-toggle="modal" data-bs-target="#updateStudentModal"><i class="bi bi-pencil-square"></i> Update</button>
+              </div>
+            </div>
+          `;
+          studentsContainer.appendChild(card);
+        });
+      };
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        try {
+          const response = await axios.post(`${BASE_URL}/api/students`, {
+            name: formData.get("name"),
+            username: formData.get("username"),
+            booked: formData.get("booked"),
+            take: new Date(formData.get("takeDate")), // Parse date string to Date object
+            give: new Date(formData.get("giveDate")), // Parse date string to Date object
+          });
+          fetchStudents();
+          form.reset();
+          Swal.fire("Success", "Student added successfully!", "success");
+        } catch (error) {
+          console.error("Error adding student", error);
+          Swal.fire("Error", "Failed to add student", "error");
+        }
       });
+      studentsContainer.addEventListener("click", async (e) => {
+        if (e.target.classList.contains("delete-btn")) {
+          const studentId = e.target.getAttribute("data-id");
+          try {
+            const response = await axios.delete(
+              `${BASE_URL}/api/students/${studentId}`
+            );
+            fetchStudents();
+            window.location.reload();
+            Swal.fire("Success", "Student deleted successfully!", "success");
+          } catch (error) {
+            console.error("Error deleting student", error);
+            Swal.fire("Error", "Failed to delete student", "error");
+          }
+        } else if (e.target.classList.contains("update-btn")) {
+          const studentId = e.target.getAttribute("data-id");
+          try {
+            const response = await axios.get(
+              `${BASE_URL}/api/students/${studentId}`
+            );
+            const student = response.data.data;
+            document.getElementById("updateName").value = student.name;
+            document.getElementById("updateUsername").value =
+              student.username;
+            document.getElementById("updateBooked").value = student.booked;
+            document.getElementById("updateTakeDate").value = student.take; // Assign correct field value
+            document.getElementById("updateGiveDate").value = student.give; // Assign correct field value
+            document.getElementById("studentIdToUpdate").value = student._id;
+          } catch (error) {
+            console.error("Error fetching student for update:", error);
+          }
+        }
+      });
+      updateStudentForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const studentId = document.getElementById("studentIdToUpdate").value;
+        const formData = new FormData(updateStudentForm);
+        try {
+          const response = await axios.put(
+            `${BASE_URL}/api/students/${studentId}`,
+            {
+              name: formData.get("name"),
+              username: formData.get("username"),
+              booked: formData.get("booked"),
+              take: new Date(formData.get("takeDate")), // Parse date string to Date object
+              give: new Date(formData.get("giveDate")), // Parse date string to Date object
+            }
+          );
+          if (response.status === 200) {
+            updateStudentForm.reset();
+            const modal = bootstrap.Modal.getInstance(
+              document.getElementById("updateStudentModal")
+            );
+            modal.hide();
+            fetchStudents();
+            Swal.fire("Success", "Student updated successfully!", "success");
+          }
+        } catch (error) {
+          console.error("Error updating student:", error);
+          Swal.fire("Error", "Failed to update student", "error");
+        }
+      });
+      const fetchStudents = async () => {
+        try {
+          const response = await axios.get(`${BASE_URL}/api/students`);
+          const students = response.data.data.reverse();
+          renderStudents(students);
+        } catch (error) {
+          console.error("Error fetching students", error);
+        }
+      };
+      fetchStudents();
+    });
   </script>
 </body>
 
