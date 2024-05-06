@@ -64,12 +64,17 @@
       </li>
       <li class="nav-item sidebar-item">
         <a class="nav-link" href="./search.html">
-          <i class="bi bi-search"></i> Search Books
+          <i class="bi bi-search"></i> Search books
         </a>
       </li>
       <li class="nav-item sidebar-item">
         <a class="nav-link" href="./students.html">
           <i class="bi bi-person"></i> Students
+        </a>
+      </li>
+      <li class="nav-item sidebar-item">
+        <a class="nav-link" href="./order.html">
+          <i class="bi bi-card-checklist"></i> Orders
         </a>
       </li>
       <li class="nav-item sidebar-item">
@@ -86,11 +91,12 @@
       </div>
     </nav>
     <div class="container mt-3">
-      <form id="addStudentForm" method="post">
+      <form id="addStudentForm" method="post" enctype="multipart/form-data">
         <div class="row mt-4">
           <div class="col-md-4">
             <label for="name" class="form-label">Write student full name:</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Enter student full name" required />
+            <input type="text" class="form-control" id="name" name="name" placeholder="Enter student full name"
+              required />
           </div>
           <div class="col-md-4">
             <label for="username" class="form-label">Write student ID:</label>
@@ -98,20 +104,9 @@
               required />
           </div>
           <div class="col-md-4">
-            <label for="booked" class="form-label">Choose book:</label>
-            <select class="form-select" id="booked" name="booked" required>
-              <option value="">Select an book</option>
-            </select>
-          </div>
-        </div>
-        <div class="row mt-4">
-          <div class="col-md-6">
-            <label for="takeDate" class="form-label">Take date:</label>
-            <input type="date" class="form-control" id="takeDate" name="takeDate" required />
-          </div>
-          <div class="col-md-6">
-            <label for="giveDate" class="form-label">Give date:</label>
-            <input type="date" class="form-control" id="giveDate" name="giveDate" required />
+            <label for="image" class="form-label">Upload student image:</label>
+            <input type="file" class="form-control" id="image" name="image"
+              accept="image/png, image/jpeg, image/jpg, image/webp" required />
           </div>
         </div>
         <div class="d-grid gap-2 col-5 mx-auto" style="margin-top: 2%">
@@ -133,7 +128,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form id="updateStudentForm" method="post">
+            <form id="updateStudentForm" method="post" enctype="multipart/form-data">
               <input type="hidden" id="studentIdToUpdate" name="studentIdToUpdate" />
               <div class="mb-3">
                 <label for="updateName" class="form-label">Write student full name:</label>
@@ -146,18 +141,9 @@
                   placeholder="Enter student ID" />
               </div>
               <div class="mb-3">
-                <label for="updateTakeDate" class="form-label">Take date:</label>
-                <input type="date" class="form-control" id="updateTakeDate" name="takeDate" required />
-              </div>
-              <div class="mb-3">
-                <label for="updateGiveDate" class="form-label">Give date:</label>
-                <input type="date" class="form-control" id="updateGiveDate" name="giveDate" required />
-              </div>
-              <div class="mb-3">
-                <label for="updateBooked" class="form-label">Choose book:</label>
-                <select class="form-select" id="updateBooked" name="updateBooked" required>
-                  <option value="">Select an book</option>
-                </select>
+                <label for="updateImage" class="form-label">Upload student image:</label>
+                <input type="file" class="form-control" id="image" name="image"
+                  accept="image/png, image/jpeg, image/jpg, image/webp" required />
               </div>
               <div style="margin-left: 65%">
                 <button type="submit" class="btn btn-warning">
@@ -174,153 +160,140 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", async function () {
-      const BASE_URL = "http://localhost:3333";
-      const form = document.getElementById("addStudentForm");
-      const updateStudentForm = document.getElementById("updateStudentForm");
+    document.addEventListener("DOMContentLoaded", () => {
+      const BASE_URL = "http://localhost:3333/api";
       const studentsContainer = document.getElementById("students");
-      // Function to fetch and populate books in the select element
-      const fetchAndPopulateBooks = async (selectElementId) => {
-        try {
-          const response = await axios.get(`${BASE_URL}/api/books`);
-          const books = response.data.data;
-          const selectElement = document.getElementById(selectElementId);
-          selectElement.innerHTML = ""; // Clear existing options
-          // Create and append option elements for each book
-          books.forEach((book) => {
-            const option = document.createElement("option");
-            option.value = book._id;
-            option.textContent = book.title;
-            selectElement.appendChild(option);
-          });
-        } catch (error) {
-          console.error("Error fetching books:", error);
-        }
-      };
-      // Fetch and populate books for both add and update forms
-      await fetchAndPopulateBooks("booked");
-      await fetchAndPopulateBooks("updateBooked");
-      // Function to format date string to "dd-mm-yyyy" format
-      const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const day = date.getDate().toString().padStart(2, "0");
-        const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
-        const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
-      };
-      const renderStudents = (students) => {
-        studentsContainer.innerHTML = "";
-        students.forEach((student) => {
-          const card = document.createElement("div");
-          card.classList.add("col");
-          card.innerHTML = `
-            <div class="card">
-              <div class="card-body">
-                <h6 class="card-title">Student name: ${student.name}</h6>
-                <h6 class="card-subtitle text-muted">Student ID: ${student.username}</h6>
-                <h6 class="card-text">Book name: ${student.booked.title}</h6>
-                <h6 class="card-text">Taken date: ${formatDate(student.take)}</h6> 
-                <h6 class="card-text">Given date: ${formatDate(student.give)}</h6> 
-                <button class="btn btn-danger delete-btn" data-id="${student._id
-                  }"><i class="bi bi-trash-fill"></i> Delete</button>
-                <button class="btn btn-warning update-btn" data-id="${student._id
-                  }" data-bs-toggle="modal" data-bs-target="#updateStudentModal"><i class="bi bi-pencil-square"></i> Update</button>
+      const addStudentForm = document.getElementById("addStudentForm");
+      const updateStudentForm = document.getElementById("updateStudentForm");
+      const studentIdToUpdateInput =
+        document.getElementById("studentIdToUpdate");
+      const logoutBtn = document.getElementById("logoutBtn");
+
+      function fetchStudents() {
+        axios
+          .get(`${BASE_URL}/students`)
+          .then((response) => {
+            const students = response.data.data.reverse();
+            studentsContainer.innerHTML = ""; // Fix: Change 'students' to 'studentsContainer'
+            students.forEach((student) => {
+              const card = document.createElement("div");
+              card.classList.add("col");
+              card.innerHTML = `
+              <div class="card">
+                <img src="${student.image[0].medium}" style="height:300px; object-fit: cover;" class="card-img-top" alt="${student.name}" />
+                <div class="card-body">
+                  <h6 class="card-title">Student full name: ${student.name}</h6>
+                  <p class="card-text">Student ID: ${student.username}</p>
+                  <button class="btn btn-danger" data-id="${student._id}">
+                    <i class="bi bi-trash"></i> Delete</button>
+                  <button class="btn btn-warning update-btn" data-id="${student._id}">
+                    <i class="bi bi-pencil-square"></i> Update</button>
+                </div>
               </div>
-            </div>
-          `;
-          studentsContainer.appendChild(card);
-        });
-      };
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const formData = new FormData(form);
-        try {
-          const response = await axios.post(`${BASE_URL}/api/students`, {
-            name: formData.get("name"),
-            username: formData.get("username"),
-            booked: formData.get("booked"),
-            take: new Date(formData.get("takeDate")), // Parse date string to Date object
-            give: new Date(formData.get("giveDate")), // Parse date string to Date object
+            `;
+              studentsContainer.appendChild(card);
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching students:", error);
           });
-          fetchStudents();
-          form.reset();
-          Swal.fire("Success", "Student added successfully!", "success");
-        } catch (error) {
-          console.error("Error adding student", error);
-          Swal.fire("Error", "Failed to add student", "error");
-        }
-      });
-      studentsContainer.addEventListener("click", async (e) => {
-        if (e.target.classList.contains("delete-btn")) {
-          const studentId = e.target.getAttribute("data-id");
-          try {
-            const response = await axios.delete(
-              `${BASE_URL}/api/students/${studentId}`
-            );
+      }
+
+      addStudentForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const formData = new FormData(addStudentForm);
+        axios
+          .post(`${BASE_URL}/students`, formData)
+          .then(() => {
             fetchStudents();
-            window.location.reload();
-            Swal.fire("Success", "Student deleted successfully!", "success");
-          } catch (error) {
-            console.error("Error deleting student", error);
-            Swal.fire("Error", "Failed to delete student", "error");
-          }
-        } else if (e.target.classList.contains("update-btn")) {
-          const studentId = e.target.getAttribute("data-id");
-          try {
-            const response = await axios.get(
-              `${BASE_URL}/api/students/${studentId}`
-            );
-            const student = response.data.data;
-            document.getElementById("updateName").value = student.name;
-            document.getElementById("updateUsername").value =
-              student.username;
-            document.getElementById("updateBooked").value = student.booked;
-            document.getElementById("updateTakeDate").value = student.take; // Assign correct field value
-            document.getElementById("updateGiveDate").value = student.give; // Assign correct field value
-            document.getElementById("studentIdToUpdate").value = student._id;
-          } catch (error) {
-            console.error("Error fetching student for update:", error);
-          }
+            addStudentForm.reset();
+          })
+          .catch((error) => {
+            console.error("Error adding student:", error);
+          });
+      });
+
+      studentsContainer.addEventListener("click", (event) => {
+        if (event.target.classList.contains("btn-danger")) {
+      const studentId = event.target.getAttribute("data-id");
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .delete(`${BASE_URL}/students/${studentId}`)
+            .then(() => {
+              fetchStudents();
+              Swal.fire(
+                "Deleted!",
+                "Your student has been deleted.",
+                "success"
+              );
+            })
+            .catch((error) => {
+              console.error("Error deleting student:", error);
+              Swal.fire(
+                "Error!",
+                "An error occurred while deleting the student.",
+                "error"
+              );
+            });
         }
       });
-      updateStudentForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const studentId = document.getElementById("studentIdToUpdate").value;
+    }
+        if (event.target.classList.contains("update-btn")) {
+          const studentId = event.target.getAttribute("data-id");
+          axios
+            .get(`${BASE_URL}/students/${studentId}`)
+            .then((response) => {
+              const student = response.data.data;
+              studentIdToUpdateInput.value = student._id;
+              document.getElementById("updateName").value = student.name; // Fix: Changed 'updateName' to 'document.getElementById("updateName")'
+              document.getElementById("updateUsername").value =
+                student.username; // Fix: Changed 'updateUsername' to 'document.getElementById("updateUsername")'
+              // Set a placeholder for the image field as you can't pre-fill file inputs
+              document.getElementById("image").placeholder = "Image selected"; // Fix: Changed 'updateImage' to 'document.getElementById("updateImage")'
+              const updateStudentModal = new bootstrap.Modal(
+                document.getElementById("updateStudentModal")
+              );
+              updateStudentModal.show();
+            })
+            .catch((error) => {
+              console.error("Error fetching student:", error);
+            });
+        }
+      });
+
+      updateStudentForm.addEventListener("submit", (event) => {
+        event.preventDefault();
         const formData = new FormData(updateStudentForm);
-        try {
-          const response = await axios.put(
-            `${BASE_URL}/api/students/${studentId}`,
-            {
-              name: formData.get("name"),
-              username: formData.get("username"),
-              booked: formData.get("booked"),
-              take: new Date(formData.get("takeDate")), // Parse date string to Date object
-              give: new Date(formData.get("giveDate")), // Parse date string to Date object
-            }
-          );
-          if (response.status === 200) {
-            updateStudentForm.reset();
-            const modal = bootstrap.Modal.getInstance(
+        const studentId = studentIdToUpdateInput.value;
+        axios
+          .put(`${BASE_URL}/students/${studentId}`, formData)
+          .then(() => {
+            fetchStudents();
+            const updateStudentModal = bootstrap.Modal.getInstance(
               document.getElementById("updateStudentModal")
             );
-            modal.hide();
-            fetchStudents();
-            Swal.fire("Success", "Student updated successfully!", "success");
-          }
-        } catch (error) {
-          console.error("Error updating student:", error);
-          Swal.fire("Error", "Failed to update student", "error");
-        }
+            updateStudentModal.hide();
+          })
+          .catch((error) => {
+            console.error("Error updating student:", error);
+          });
       });
-      const fetchStudents = async () => {
-        try {
-          const response = await axios.get(`${BASE_URL}/api/students`);
-          const students = response.data.data.reverse();
-          renderStudents(students);
-        } catch (error) {
-          console.error("Error fetching students", error);
-        }
-      };
+
+      logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("token");
+        window.location.href = "./login.html";
+      });
+
       fetchStudents();
     });
   </script>
