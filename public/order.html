@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard</title>
+  <title>Orders</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
@@ -95,13 +95,13 @@
         <div class="row mt-6 mb-3">
           <div class="col-md-6 mb-3">
             <label for="student" class="form-label">Choose student:</label>
-            <select type="text" class="form-control" id="student" name="student" required>
+            <select class="form-control" id="student" name="student" required>
               <option value="">Choose a student</option>
             </select>
           </div>
           <div class="col-md-6">
             <label for="book" class="form-label">Choose book:</label>
-            <select type="text" class="form-control" id="book" name="book" required>
+            <select class="form-control" id="book" name="book" required>
               <option value="">Choose a book</option>
             </select>
           </div>
@@ -116,17 +116,22 @@
         </div>
         <div class="d-grid gap-2 col-5 mx-auto" style="margin-top: 2%">
           <button type="submit" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Save author
+            <i class="bi bi-plus-circle"></i> Save order
           </button>
         </div>
       </form>
     </div>
-    <div id="ordersContainer" class="row row-cols-1 g-3 mt-3"></div>
-    <div class="modal fade" id="updateOrderModal" tabindex="-1" aria-labelledby="updateOrderModalLabel" aria-hidden="true">
+    <div class="container mt-3">
+      <div id="ordersContainer" class="row row-cols-1 row-cols-md-3 g-4"></div>
+    </div>
+    <div class="modal fade" id="updateOrderModal" tabindex="-1" aria-labelledby="updateOrderModalLabel"
+      aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="updateOrderModalLabel">Update order</h5>
+            <h5 class="modal-title" id="updateOrderModalLabel">
+              Update order
+            </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -134,13 +139,13 @@
               <input type="hidden" id="orderId" name="orderId" />
               <div class="mb-3">
                 <label for="updateStudent" class="form-label">Choose student:</label>
-                <select type="text" class="form-control" id="updateStudent" name="updateStudent" required>
+                <select class="form-control" id="updateStudent" name="updateStudent" required>
                   <option value="">Choose a student</option>
                 </select>
               </div>
               <div class="mb-3">
                 <label for="updateBook" class="form-label">Choose book:</label>
-                <select type="text" class="form-control" id="updateBook" name="updateBook" required>
+                <select class="form-control" id="updateBook" name="updateBook" required>
                   <option value="">Choose a book</option>
                 </select>
               </div>
@@ -153,7 +158,7 @@
                 <input type="date" class="form-control" id="updateGive" name="updateGive" required />
               </div>
               <div class="d-grid gap-2 col-5 mx-auto">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-warning">
                   <i class="bi bi-pencil-square"></i> Update order
                 </button>
               </div>
@@ -164,14 +169,196 @@
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    document
-      .getElementById("logoutBtn")
-      .addEventListener("click", function (event) {
+    document.addEventListener("DOMContentLoaded", function () {
+      const BASE_URL = "http://localhost:3003/api";
+      const addOrderForm = document.getElementById("addOrderForm");
+      const updateOrderForm = document.getElementById("updateOrderForm");
+      const ordersContainer = document.getElementById("ordersContainer");
+      const orderIdInput = document.getElementById("orderId");
+
+      function formatDate(dateString) {
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+      }
+
+      function fetchOrders() {
+        axios
+          .get(`${BASE_URL}/orders`)
+          .then((response) => {
+            const orders = response.data.data.reverse();
+            ordersContainer.innerHTML = "";
+            orders.forEach((order) => {
+              const orderElement = document.createElement("div");
+              orderElement.className = "col";
+              orderElement.innerHTML = `
+                  <div class="col">
+                    <div class="card h-100">
+                      <div class="card-body">
+                        <h6 class="card-title">${order.student.name} - ${order.book.title}</h6>
+                        <p class="card-text">Take date: ${formatDate(order.take)}</p>
+                        <p class="card-text">Give date: ${formatDate(order.give)}</p>
+                        <button class="btn btn-danger" data-id="${order._id}">
+                          <i class="bi bi-trash"></i> Delete</button>
+                        <button class="btn btn-warning" data-id="${order._id}">
+                          <i class="bi bi-pencil-square"></i> Update</button>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              ordersContainer.appendChild(orderElement);
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching orders:", error);
+          });
+      }
+
+      fetchOrders();
+
+      function fetchStudents(selectElementId) {
+        axios
+          .get(`${BASE_URL}/students`)
+          .then((response) => {
+            const students = response.data.data;
+            const studentSelect = document.getElementById(selectElementId);
+            studentSelect.innerHTML = '<option value="">Choose a student</option>'; // Clear previous options
+            students.forEach((student) => {
+              const option = document.createElement("option");
+              option.value = student._id; // Assuming student ID is in "_id" field
+              option.textContent = student.name; // Assuming student name is in "name" field
+              studentSelect.appendChild(option);
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching students:", error);
+          });
+      }
+
+      function fetchBooks(selectElementId) {
+        axios
+          .get(`${BASE_URL}/books`)
+          .then((response) => {
+            const books = response.data.data;
+            const bookSelect = document.getElementById(selectElementId);
+            bookSelect.innerHTML = '<option value="">Choose a book</option>'; // Clear previous options
+            books.forEach((book) => {
+              const option = document.createElement("option");
+              option.value = book._id; // Assuming book ID is in "_id" field
+              option.textContent = book.title; // Assuming book title is in "title" field
+              bookSelect.appendChild(option);
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching books:", error);
+          });
+      }
+      fetchStudents("student");
+      fetchBooks("book");
+
+      addOrderForm.addEventListener("submit", function (event) {
         event.preventDefault();
-        localStorage.removeItem("token");
-        window.location.href = "../index.html";
+        const student = document.getElementById("student").value;
+        const book = document.getElementById("book").value;
+        const takeDate = document.getElementById("take").value;
+        const giveDate = document.getElementById("give").value;
+
+        axios
+          .post(`${BASE_URL}/orders`, {
+            student: student,
+            book: book,
+            take: takeDate,
+            give: giveDate,
+          })
+          .then((response) => {
+            fetchOrders();
+            addOrderForm.reset();
+            Swal.fire("Success", "Order added successfully", "success");
+          })
+          .catch((error) => {
+            console.error("Error adding order:", error);
+            Swal.fire("Error", "An error occurred", "error");
+          });
       });
+
+      ordersContainer.addEventListener("click", function (event) {
+        if (event.target.closest(".btn-danger")) {
+          const orderId = event.target.closest(".btn-danger").getAttribute("data-id");
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "No, cancel!",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              axios
+                .delete(`${BASE_URL}/orders/${orderId}`)
+                .then((response) => {
+                  fetchOrders();
+                  Swal.fire("Deleted!", "Order has been deleted.", "success");
+                  location.reload(); // Reload the page after deletion
+                })
+                .catch((error) => {
+                  console.error("Error deleting order:", error);
+                  Swal.fire("Error", "An error occurred", "error");
+                });
+            }
+          });
+        } else if (event.target.closest(".btn-warning")) {
+          const orderId = event.target.closest(".btn-warning").getAttribute("data-id");
+          axios
+            .get(`${BASE_URL}/orders/${orderId}`)
+            .then((response) => {
+              const order = response.data.data;
+              orderIdInput.value = order._id;
+              fetchStudents("updateStudent");
+              fetchBooks("updateBook");
+              document.getElementById("updateStudent").value = order.student._id;
+              document.getElementById("updateBook").value = order.book._id;
+              document.getElementById("updateTake").value = order.take;
+              document.getElementById("updateGive").value = order.give;
+              const updateOrderModal = new bootstrap.Modal(
+                document.getElementById("updateOrderModal")
+              );
+              updateOrderModal.show();
+            })
+            .catch((error) => {
+              console.error("Error fetching order:", error);
+            });
+        }
+      });
+
+      updateOrderForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const orderId = document.getElementById("orderId").value;
+        const student = document.getElementById("updateStudent").value;
+        const book = document.getElementById("updateBook").value;
+        const takeDate = document.getElementById("updateTake").value;
+        const giveDate = document.getElementById("updateGive").value;
+
+        axios
+          .put(`${BASE_URL}/orders/${orderId}`, {
+            student: student,
+            book: book,
+            take: takeDate,
+            give: giveDate,
+          })
+          .then((response) => {
+            fetchOrders();
+            const updateOrderModal = bootstrap.Modal.getInstance(document.getElementById("updateOrderModal"));
+            updateOrderModal.hide();
+            Swal.fire("Success", "Order updated successfully", "success");
+          })
+          .catch((error) => {
+            console.error("Error updating order:", error);
+            Swal.fire("Error", "An error occurred", "error");
+          });
+      });
+    });
   </script>
 </body>
 

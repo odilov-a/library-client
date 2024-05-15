@@ -161,7 +161,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const BASE_URL = "http://localhost:3333/api";
+      const BASE_URL = "http://localhost:3003/api";
       const studentsContainer = document.getElementById("students");
       const addStudentForm = document.getElementById("addStudentForm");
       const updateStudentForm = document.getElementById("updateStudentForm");
@@ -202,52 +202,73 @@
       addStudentForm.addEventListener("submit", (event) => {
         event.preventDefault();
         const formData = new FormData(addStudentForm);
+        const username = formData.get("username");
+
+        // Check if the username is unique
         axios
-          .post(`${BASE_URL}/students`, formData)
-          .then(() => {
-            fetchStudents();
-            addStudentForm.reset();
+          .get(`${BASE_URL}/students?username=${username}`)
+          .then((response) => {
+            const existingStudents = response.data.data;
+            if (existingStudents.length > 0) {
+              // If username already exists, show an error message
+              Swal.fire(
+                "Error",
+                "Username is not unique. Please choose a different username.",
+                "error"
+              );
+            } else {
+              // If username is unique, proceed with adding the student
+              axios
+                .post(`${BASE_URL}/students`, formData)
+                .then(() => {
+                  fetchStudents();
+                  addStudentForm.reset();
+                })
+                .catch((error) => {
+                  console.error("Error adding student:", error);
+                });
+            }
           })
           .catch((error) => {
-            console.error("Error adding student:", error);
+            console.error("Error checking username uniqueness:", error);
           });
       });
 
       studentsContainer.addEventListener("click", (event) => {
         if (event.target.classList.contains("btn-danger")) {
-      const studentId = event.target.getAttribute("data-id");
+          const studentId = event.target.getAttribute("data-id");
 
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axios
-            .delete(`${BASE_URL}/students/${studentId}`)
-            .then(() => {
-              fetchStudents();
-              Swal.fire(
-                "Deleted!",
-                "Your student has been deleted.",
-                "success"
-              );
-            })
-            .catch((error) => {
-              console.error("Error deleting student:", error);
-              Swal.fire(
-                "Error!",
-                "An error occurred while deleting the student.",
-                "error"
-              );
-            });
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, delete it!",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              axios
+                .delete(`${BASE_URL}/students/${studentId}`)
+                .then(() => {
+                  fetchStudents();
+                  Swal.fire(
+                    "Deleted!",
+                    "Your student has been deleted.",
+                    "success"
+                  );
+                })
+                .catch((error) => {
+                  console.error("Error deleting student:", error);
+                  Swal.fire(
+                    "Error!",
+                    "An error occurred while deleting the student.",
+                    "error"
+                  );
+                });
+            }
+          });
         }
-      });
-    }
         if (event.target.classList.contains("update-btn")) {
           const studentId = event.target.getAttribute("data-id");
           axios
