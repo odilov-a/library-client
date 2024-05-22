@@ -215,6 +215,7 @@
           .get(`${BASE_URL}/api/books`)
           .then((response) => {
             const books = response.data.data.reverse();
+            console.log(books);
             booksContainer.innerHTML = "";
             books.forEach((book) => {
               const card = document.createElement("div");
@@ -223,7 +224,7 @@
               <div class="card border-0 shadow-sm">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="${book.image[0].medium}" class="img-fluid rounded-start" alt="Book Cover" />
+                        <img src="${book.image[0].medium}" class="img-fluid rounded-start" alt="${book.title}" />
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
