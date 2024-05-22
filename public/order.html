@@ -105,13 +105,23 @@
               <option value="">Choose a book</option>
             </select>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
             <label for="take" class="form-label">Take date:</label>
             <input type="date" class="form-control" id="take" name="take" required />
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
             <label for="give" class="form-label">Give date:</label>
             <input type="date" class="form-control" id="give" name="give" required />
+          </div>
+          <div class="col-md-4">
+            <label for="give" class="form-label">Book status:</label>
+            <select class="form-select" aria-label="Default select example" id="type" name="type" required>
+              <option value="new">New book</option>
+              <option value="good">Good book</option>
+              <option value="satisfactory">Satisfying book</option>
+              <option value="unsatisfied">Unsatisfactory book</option>
+              <option value="useless">Useless book</option>
+            </select>
           </div>
         </div>
         <div class="d-grid gap-2 col-5 mx-auto" style="margin-top: 2%">
@@ -149,13 +159,23 @@
                   <option value="">Choose a book</option>
                 </select>
               </div>
-              <div class="mb-3">
+              <div class="mb-4">
                 <label for="updateTake" class="form-label">Take date:</label>
                 <input type="date" class="form-control" id="updateTake" name="updateTake" required />
               </div>
-              <div class="mb-3">
+              <div class="mb-4">
                 <label for="updateGive" class="form-label">Give date:</label>
                 <input type="date" class="form-control" id="updateGive" name="updateGive" required />
+              </div>
+              <div class="mb-4">
+                <label for="give" class="form-label">Book status:</label>
+                <select class="form-select" aria-label="Default select example" id="updateType" name="updateType" required>
+                  <option value="new">New book</option>
+                  <option value="good">Good book</option>
+                  <option value="satisfactory">Satisfying book</option>
+                  <option value="unsatisfied">Unsatisfactory book</option>
+                  <option value="useless">Useless book</option>
+                </select>
               </div>
               <div class="d-grid gap-2 col-5 mx-auto">
                 <button type="submit" class="btn btn-warning">
@@ -197,7 +217,7 @@
                   <div class="col">
                     <div class="card h-100">
                       <div class="card-body">
-                        <h6 class="card-title">${order.student.name} - ${order.book.title}</h6>
+                        <h6 class="card-title">${order.student.name} - ${order.book.title} - ${order.type}</h6>
                         <p class="card-text">Take date: ${formatDate(order.take)}</p>
                         <p class="card-text">Give date: ${formatDate(order.give)}</p>
                         <button class="btn btn-danger" data-id="${order._id}">
@@ -264,6 +284,7 @@
         const book = document.getElementById("book").value;
         const takeDate = document.getElementById("take").value;
         const giveDate = document.getElementById("give").value;
+        const type = document.getElementById("type").value;
 
         axios
           .post(`${BASE_URL}/orders`, {
@@ -271,6 +292,7 @@
             book: book,
             take: takeDate,
             give: giveDate,
+            type: type
           })
           .then((response) => {
             fetchOrders();
@@ -321,6 +343,7 @@
               document.getElementById("updateBook").value = order.book._id;
               document.getElementById("updateTake").value = order.take;
               document.getElementById("updateGive").value = order.give;
+              document.getElementById("updateType").value = order.type;
               const updateOrderModal = new bootstrap.Modal(
                 document.getElementById("updateOrderModal")
               );
@@ -345,6 +368,7 @@
         const book = document.getElementById("updateBook").value;
         const takeDate = document.getElementById("updateTake").value;
         const giveDate = document.getElementById("updateGive").value;
+        const type = document.getElementById("updateType").value;
 
         axios
           .put(`${BASE_URL}/orders/${orderId}`, {
@@ -352,6 +376,7 @@
             book: book,
             take: takeDate,
             give: giveDate,
+            type: type
           })
           .then((response) => {
             fetchOrders();
